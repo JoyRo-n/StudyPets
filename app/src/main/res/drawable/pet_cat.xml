@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Kucing duduk - vector art menggunakan path shapes
+  Terdiri dari: badan, kepala, telinga, ekor, mata, mulut, hidung
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Ekor (di belakang badan) — dibungkus group agar bisa dianimasikan -->
+    <group
+        android:name="tail"
+        android:pivotX="85"
+        android:pivotY="90">
+        <path
+            android:pathData="M 85,90 Q 105,75 100,55 Q 98,48 93,52 Q 97,68 82,82 Z"
+            android:fillColor="#F4A460"
+            android:strokeColor="#D2691E"
+            android:strokeWidth="1"/>
+    </group>
+
+    <!-- Badan bulat -->
+    <path
+        android:pathData="M 30,70 Q 28,100 60,105 Q 92,100 90,70 Q 88,55 60,53 Q 32,55 30,70 Z"
+        android:fillColor="#F4A460"/>
+
+    <!-- Kepala -->
+    <path
+        android:pathData="M 35,50 Q 33,20 60,18 Q 87,20 85,50 Q 87,65 60,67 Q 33,65 35,50 Z"
+        android:fillColor="#F4A460"/>
+
+    <!-- Telinga kiri -->
+    <path
+        android:name="ear_left"
+        android:pathData="M 38,30 L 30,12 L 50,22 Z"
+        android:fillColor="#F4A460"
+        android:strokeColor="#D2691E"
+        android:strokeWidth="1"/>
+    <!-- Inner ear kiri -->
+    <path
+        android:pathData="M 39,28 L 33,16 L 47,23 Z"
+        android:fillColor="#FFB6C1"/>
+
+    <!-- Telinga kanan -->
+    <path
+        android:name="ear_right"
+        android:pathData="M 82,30 L 90,12 L 70,22 Z"
+        android:fillColor="#F4A460"
+        android:strokeColor="#D2691E"
+        android:strokeWidth="1"/>
+    <!-- Inner ear kanan -->
+    <path
+        android:pathData="M 81,28 L 87,16 L 73,23 Z"
+        android:fillColor="#FFB6C1"/>
+
+    <!-- Mata kiri - hitam bulat — dibungkus group agar bisa dianimasikan (scaleY) -->
+    <group
+        android:name="eye_left"
+        android:pivotX="47"
+        android:pivotY="43">
+        <path
+            android:pathData="M 47,43 m -6,0 a 6,6 0 1,0 12,0 a 6,6 0 1,0 -12,0"
+            android:fillColor="#2C1810"/>
+        <!-- Highlight mata kiri -->
+        <path
+            android:pathData="M 44,40 m -2,0 a 2,2 0 1,0 4,0 a 2,2 0 1,0 -4,0"
+            android:fillColor="#FFFFFF"/>
+    </group>
+
+    <!-- Mata kanan - hitam bulat — dibungkus group agar bisa dianimasikan (scaleY) -->
+    <group
+        android:name="eye_right"
+        android:pivotX="73"
+        android:pivotY="43">
+        <path
+            android:pathData="M 73,43 m -6,0 a 6,6 0 1,0 12,0 a 6,6 0 1,0 -12,0"
+            android:fillColor="#2C1810"/>
+        <!-- Highlight mata kanan -->
+        <path
+            android:pathData="M 70,40 m -2,0 a 2,2 0 1,0 4,0 a 2,2 0 1,0 -4,0"
+            android:fillColor="#FFFFFF"/>
+    </group>
+
+    <!-- Hidung -->
+    <path
+        android:pathData="M 58,53 L 62,53 L 60,57 Z"
+        android:fillColor="#FF9999"/>
+
+    <!-- Mulut -->
+    <path
+        android:pathData="M 60,57 Q 55,62 52,60 M 60,57 Q 65,62 68,60"
+        android:fillColor="#00000000"
+        android:strokeColor="#D2691E"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"/>
+
+    <!-- Kumis kiri -->
+    <path
+        android:pathData="M 55,54 L 35,50 M 55,56 L 35,57 M 55,58 L 37,63"
+        android:fillColor="#00000000"
+        android:strokeColor="#A0522D"
+        android:strokeWidth="1"
+        android:strokeLineCap="round"/>
+    <!-- Kumis kanan -->
+    <path
+        android:pathData="M 65,54 L 85,50 M 65,56 L 85,57 M 65,58 L 83,63"
+        android:fillColor="#00000000"
+        android:strokeColor="#A0522D"
+        android:strokeWidth="1"
+        android:strokeLineCap="round"/>
+
+    <!-- Kaki depan kiri -->
+    <path
+        android:pathData="M 40,100 Q 38,112 44,113 Q 50,112 48,100 Z"
+        android:fillColor="#F4A460"/>
+    <!-- Kaki depan kanan -->
+    <path
+        android:pathData="M 72,100 Q 70,112 76,113 Q 82,112 80,100 Z"
+        android:fillColor="#F4A460"/>
+
+    <!-- Warna perut lebih terang -->
+    <path
+        android:pathData="M 45,75 Q 60,80 75,75 Q 78,90 60,93 Q 42,90 45,75 Z"
+        android:fillColor="#FFF0E0"/>
+
+    <!-- Stripe coklat di kepala -->
+    <path
+        android:pathData="M 55,20 Q 60,15 65,20"
+        android:fillColor="#00000000"
+        android:strokeColor="#D2691E"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"/>
+    <path
+        android:pathData="M 50,24 Q 60,18 70,24"
+        android:fillColor="#00000000"
+        android:strokeColor="#D2691E"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"/>
+
+</vector>

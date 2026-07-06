@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Background dark -->
+    <color name="bg_main">#121212</color>
+    <color name="bg_card">#1E1E2E</color>
+    <color name="bg_login">#121212</color>
+
+    <!-- Text dark -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#BBBBBB</color>
+    <color name="text_hint">#777777</color>
+
+    <!-- Input dark -->
+    <color name="input_bg">#2A2A3E</color>
+    <color name="input_border">#3A3A4E</color>
+</resources>

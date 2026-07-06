@@ -1,0 +1,29 @@
+<<<<<<< HEAD
+<resources>
+    <style name="Base.Theme.StudyPets" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#BB86FC</item>
+        <item name="colorPrimaryDark">#7C4DFF</item>
+        <item name="colorAccent">#FFB74D</item>
+        <item name="android:statusBarColor">#1A1A2E</item>
+        <item name="android:windowBackground">#121212</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColorSecondary">#BBBBBB</item>
+    </style>
+
+    <style name="Theme.StudyPets" parent="Base.Theme.StudyPets" />
+
+    <style name="Theme.StudyPets.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/bg_splash</item>
+        <item name="android:statusBarColor">@color/bg_splash</item>
+        <item name="android:navigationBarColor">@color/bg_splash</item>
+    </style>
+</resources>
+=======
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.StudyPet" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    </style>
+</resources>
+>>>>>>> c0e7c78c803140c3c029b01320da97d86db9b09b

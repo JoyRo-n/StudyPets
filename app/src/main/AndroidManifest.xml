@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<<<<<<< HEAD
+    <!-- Izin internet — wajib untuk WebView dan YouTube -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Izin notifikasi (Android 13+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <!-- Izin AlarmManager — wajib untuk deadline reminder -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
+
+    <!-- Izin wake lock — agar alarm bisa bangunkan device -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+    <application
+        android:name=".StudyPetsApp"
+=======
+    <application
+>>>>>>> c0e7c78c803140c3c029b01320da97d86db9b09b
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+<<<<<<< HEAD
+        android:theme="@style/Theme.StudyPets"
+        tools:targetApi="31">
+
+        <!-- Splash Screen (LAUNCHER) -->
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.StudyPets.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Login -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Register -->
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Main Dashboard -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Quest -->
+        <activity
+            android:name=".QuestActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Shop -->
+        <activity
+            android:name=".ShopActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Inventory -->
+        <activity
+            android:name=".InventoryActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Achievement -->
+        <activity
+            android:name=".AchievementActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Stats -->
+        <activity
+            android:name=".StatsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Calendar -->
+        <activity
+            android:name=".CalendarActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Materi (pilih materi belajar) -->
+        <activity
+            android:name=".MateriActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Video (tonton video YouTube) -->
+        <activity
+            android:name=".VideoActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Quiz (kerjakan soal) -->
+        <activity
+            android:name=".QuizActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Hasil Quiz -->
+        <activity
+            android:name=".HasilQuizActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Tambah Quest — pola TambahActivity dari materi dosen -->
+        <activity
+            android:name=".TambahQuestActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Daftar User -->
+        <activity
+            android:name=".DaftarUserActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- BroadcastReceiver untuk notifikasi deadline quest -->
+        <receiver
+            android:name=".DeadlineReceiver"
+            android:exported="false"/>
+
+    </application>
+
+</manifest>
+=======
+        android:theme="@style/Theme.StudyPet">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+>>>>>>> c0e7c78c803140c3c029b01320da97d86db9b09b
