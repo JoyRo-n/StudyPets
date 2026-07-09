@@ -87,6 +87,7 @@
                         android:layout_height="wrap_content"
                         android:text="A. Pilihan A"
                         android:textSize="15sp"
+                        android:textColor="@color/text_primary"
                         android:padding="12dp"
                         android:layout_marginBottom="8dp"
                         android:background="@drawable/bg_card_rounded"/>
@@ -97,6 +98,7 @@
                         android:layout_height="wrap_content"
                         android:text="B. Pilihan B"
                         android:textSize="15sp"
+                        android:textColor="@color/text_primary"
                         android:padding="12dp"
                         android:layout_marginBottom="8dp"
                         android:background="@drawable/bg_card_rounded"/>
@@ -107,6 +109,7 @@
                         android:layout_height="wrap_content"
                         android:text="C. Pilihan C"
                         android:textSize="15sp"
+                        android:textColor="@color/text_primary"
                         android:padding="12dp"
                         android:layout_marginBottom="8dp"
                         android:background="@drawable/bg_card_rounded"/>
@@ -117,6 +120,7 @@
                         android:layout_height="wrap_content"
                         android:text="D. Pilihan D"
                         android:textSize="15sp"
+                        android:textColor="@color/text_primary"
                         android:padding="12dp"
                         android:layout_marginBottom="8dp"
                         android:background="@drawable/bg_card_rounded"/>

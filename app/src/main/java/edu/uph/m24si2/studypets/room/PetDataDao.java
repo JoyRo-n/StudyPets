@@ -17,43 +17,35 @@ public interface PetDataDao {
     @Update
     void update(PetData petData);
 
-    // Ambil data pet (id selalu 1)
-    @Query("SELECT * FROM pet_data WHERE id = 1 LIMIT 1")
-    PetData getPet();
+    // Ambil data pet milik user tertentu
+    @Query("SELECT * FROM pet_data WHERE username = :username LIMIT 1")
+    PetData getPet(String username);
 
-    // Ganti nama pet
-    @Query("UPDATE pet_data SET petName = :namaBaru WHERE id = 1")
-    void gantiNama(String namaBaru);
+    @Query("UPDATE pet_data SET petName = :namaBaru WHERE username = :username")
+    void gantiNama(String username, String namaBaru);
 
-    // Tambah nilai kenyang (tidak melebihi 100)
-    @Query("UPDATE pet_data SET hunger = MIN(100, hunger + :nilai) WHERE id = 1")
-    void tambahHunger(int nilai);
+    @Query("UPDATE pet_data SET hunger = MIN(100, hunger + :nilai) WHERE username = :username")
+    void tambahHunger(String username, int nilai);
 
-    // Tambah nilai haus
-    @Query("UPDATE pet_data SET thirst = MIN(100, thirst + :nilai) WHERE id = 1")
-    void tambahThirst(int nilai);
+    @Query("UPDATE pet_data SET thirst = MIN(100, thirst + :nilai) WHERE username = :username")
+    void tambahThirst(String username, int nilai);
 
-    // Tambah health
-    @Query("UPDATE pet_data SET health = MIN(100, health + :nilai) WHERE id = 1")
-    void tambahHealth(int nilai);
+    @Query("UPDATE pet_data SET health = MIN(100, health + :nilai) WHERE username = :username")
+    void tambahHealth(String username, int nilai);
 
-    // Tambah mood
-    @Query("UPDATE pet_data SET mood = MIN(100, mood + :nilai) WHERE id = 1")
-    void tambahMood(int nilai);
+    @Query("UPDATE pet_data SET mood = MIN(100, mood + :nilai) WHERE username = :username")
+    void tambahMood(String username, int nilai);
 
-    // Kurangi stats pet setiap waktu (tidak boleh minus)
     @Query("UPDATE pet_data SET " +
            "hunger = MAX(0, hunger - :kurangiHunger), " +
            "thirst = MAX(0, thirst - :kurangiThirst), " +
            "mood   = MAX(0, mood   - :kurangiMood) " +
-           "WHERE id = 1")
-    void kurangiStats(int kurangiHunger, int kurangiThirst, int kurangiMood);
+           "WHERE username = :username")
+    void kurangiStats(String username, int kurangiHunger, int kurangiThirst, int kurangiMood);
 
-    // Update waktu terakhir diberi makan
-    @Query("UPDATE pet_data SET lastFedTime = :waktu WHERE id = 1")
-    void updateWaktuMakan(String waktu);
+    @Query("UPDATE pet_data SET lastFedTime = :waktu WHERE username = :username")
+    void updateWaktuMakan(String username, String waktu);
 
-    // Hapus semua data
     @Query("DELETE FROM pet_data")
     void hapusSemua();
 }

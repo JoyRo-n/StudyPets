@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -70,6 +69,23 @@
                     android:textSize="28sp"
                     android:textStyle="bold"
                     android:textColor="#FFFFFF"/>
+
+                <!-- Badge admin — hanya tampil jika isAdmin = true -->
+                <TextView
+                    android:id="@+id/tv_admin_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="👑 Administrator"
+                    android:textSize="12sp"
+                    android:textColor="#1A1A1A"
+                    android:textStyle="bold"
+                    android:background="#FFD740"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
@@ -790,6 +806,18 @@
                 android:background="@drawable/bg_btn_secondary"
                 android:textColor="#F44336"/>
 
+            <!-- Tombol Admin — hanya tampil jika isAdmin = true (diatur dari MainActivity) -->
+            <Button
+                android:id="@+id/btn_kelola_user"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:text="👑 Kelola User (Admin)"
+                android:textSize="14sp"
+                android:background="@drawable/bg_btn_secondary"
+                android:textColor="#7C4DFF"
+                android:visibility="gone"/>
+
             <View android:layout_width="match_parent" android:layout_height="16dp"/>
 
         </LinearLayout>
@@ -797,23 +825,3 @@
     </LinearLayout>
 
 </ScrollView>
-=======
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
->>>>>>> c0e7c78c803140c3c029b01320da97d86db9b09b

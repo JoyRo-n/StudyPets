@@ -36,4 +36,8 @@ public interface UserDao {
     // Hapus satu user berdasarkan objek — pola @Delete dari materi dosen
     @Delete
     void hapusUser(UserEntity user);
+
+    // Cek apakah sudah ada akun admin di database
+    @Query("SELECT * FROM tabel_user WHERE isAdmin = 1 LIMIT 1")
+    UserEntity getAdmin();
 }

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import edu.uph.m24si2.studypets.room.AppDatabase;
 import edu.uph.m24si2.studypets.room.UserEntity;
+import edu.uph.m24si2.studypets.database.RoomHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -95,7 +96,11 @@ public class LoginActivity extends AppCompatActivity {
             .putBoolean("is_logged_in", true)
             .putString("username", user.username)
             .putString("pet_type", user.petType)
+            .putBoolean("is_admin", user.isAdmin) // simpan status admin
             .apply();
+
+        // Set username aktif di RoomHelper supaya quest & data terfilter per user
+        RoomHelper.getOrInit(this).setCurrentUsername(user.username);
 
         Toast.makeText(this, "Halo " + user.username + "! 🎉", Toast.LENGTH_SHORT).show();
 

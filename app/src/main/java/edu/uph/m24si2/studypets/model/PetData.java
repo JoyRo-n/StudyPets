@@ -7,7 +7,8 @@ import androidx.room.PrimaryKey;
 public class PetData {
 
     @PrimaryKey
-    public int    id          = 1;
+    @androidx.annotation.NonNull
+    public String username    = ""; // primary key adalah username
     public String petType     = "cat";
     public String petName     = "Mochi";
     public int    hunger      = 100;
@@ -18,8 +19,8 @@ public class PetData {
 
     public PetData() {}
 
-    public int    getId()               { return id; }
-    public void   setId(int v)          { this.id = v; }
+    public String getUsername()         { return username; }
+    public void   setUsername(String v) { this.username = v; }
     public String getPetType()          { return petType; }
     public void   setPetType(String v)  { this.petType = v; }
     public String getPetName()          { return petName; }
@@ -32,6 +33,6 @@ public class PetData {
     public void   setHealth(int v)      { this.health = v; }
     public int    getMood()             { return mood; }
     public void   setMood(int v)        { this.mood = v; }
-    public String getLastFedTime()          { return lastFedTime; }
-    public void   setLastFedTime(String v)  { this.lastFedTime = v; }
+    public String getLastFedTime()      { return lastFedTime; }
+    public void   setLastFedTime(String v) { this.lastFedTime = v; }
 }

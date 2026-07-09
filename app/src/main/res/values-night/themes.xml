@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <resources>
     <style name="Base.Theme.StudyPets" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">#BB86FC</item>
@@ -18,12 +17,3 @@
         <item name="android:navigationBarColor">@color/bg_splash</item>
     </style>
 </resources>
-=======
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.StudyPet" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-    </style>
-</resources>
->>>>>>> c0e7c78c803140c3c029b01320da97d86db9b09b

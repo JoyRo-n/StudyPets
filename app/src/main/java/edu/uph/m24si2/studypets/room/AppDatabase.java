@@ -26,7 +26,7 @@ import edu.uph.m24si2.studypets.room.UserEntity;
         AchievementData.class,  // achievement / badge
         DailyLoginData.class    // streak login harian
     },
-    version = 2, // naik dari 1 karena ada tabel baru
+    version = 5, // naik karena semua tabel sekarang punya kolom username untuk isolasi per-user
     exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {
@@ -53,7 +53,19 @@ public abstract class AppDatabase extends RoomDatabase {
             .allowMainThreadQueries()        // sesuai materi dosen — query bisa di UI thread
             .fallbackToDestructiveMigration() // reset database kalau versi berubah
             .build();
+
+            // Seed akun admin jika belum ada
+            seedAdminAccount(instance);
         }
         return instance;
+    }
+
+    // Buat akun admin default saat pertama kali install
+    // Username: admin | Password: admin123
+    private static void seedAdminAccount(AppDatabase db) {
+        if (db.userDao().getAdmin() == null) {
+            UserEntity admin = new UserEntity("admin", "admin123", "cat", true);
+            db.userDao().simpanUser(admin);
+        }
     }
 }

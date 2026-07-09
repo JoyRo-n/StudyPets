@@ -8,6 +8,7 @@ public class QuestData {
 
     @PrimaryKey(autoGenerate = true)
     public int    id          = 0;
+    public String username    = ""; // pemilik quest — wajib diisi saat simpan
     public String title       = "";
     public String description = "";
     public String subject     = "";

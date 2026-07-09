@@ -2,11 +2,7 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-<<<<<<< HEAD
       <SelectionState runConfigName="StudyPets">
-=======
-      <SelectionState runConfigName="app">
->>>>>>> c0e7c78c803140c3c029b01320da97d86db9b09b
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>

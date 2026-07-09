@@ -1,9 +1,6 @@
 <resources>
-<<<<<<< HEAD
     <string name="app_name">StudyPets</string>
     <string name="app_tagline">Your Study Pet Adventure! 🎮</string>
-
-    <!-- Login -->
     <string name="login_title">Selamat Datang! 👋</string>
     <string name="login_subtitle">Masuk ke petualangan belajarmu</string>
     <string name="hint_username">Username</string>
@@ -13,19 +10,11 @@
     <string name="no_account">Belum punya akun? </string>
     <string name="have_account">Sudah punya akun? </string>
     <string name="btn_login_link">Masuk</string>
-
-    <!-- Register -->
     <string name="register_title">Buat Akun Baru 🌟</string>
     <string name="register_subtitle">Pilih username dan pet andalanmu!</string>
     <string name="hint_confirm_password">Konfirmasi Password</string>
     <string name="choose_pet">Pilih Pet Kamu 🐾</string>
     <string name="btn_create_account">Buat Akun!</string>
-
-    <!-- Pet names -->
     <string name="pet_cat">Kucing 🐱</string>
     <string name="pet_dog">Anjing 🐶</string>
 </resources>
-=======
-    <string name="app_name">StudyPet</string>
-</resources>
->>>>>>> c0e7c78c803140c3c029b01320da97d86db9b09b

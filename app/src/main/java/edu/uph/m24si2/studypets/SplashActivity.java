@@ -41,14 +41,15 @@ public class SplashActivity extends AppCompatActivity {
                 .setStartDelay(600)
                 .start();
 
-        // Pindah halaman setelah 2.8 detik
+        // Selalu arahkan ke LoginActivity — user harus login ulang setiap buka app
         new Handler().postDelayed(() -> {
-            SharedPreferences prefs = getSharedPreferences("studypets_user", MODE_PRIVATE);
-            boolean sudahLogin = prefs.getBoolean("is_logged_in", false);
+            // Reset status login agar tidak skip ke MainActivity
+            getSharedPreferences("studypets_user", MODE_PRIVATE)
+                    .edit()
+                    .putBoolean("is_logged_in", false)
+                    .apply();
 
-            Intent intent = sudahLogin
-                    ? new Intent(SplashActivity.this, MainActivity.class)
-                    : new Intent(SplashActivity.this, LoginActivity.class);
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
 
             // Transisi fade keluar
             startActivity(intent);

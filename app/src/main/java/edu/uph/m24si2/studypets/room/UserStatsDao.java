@@ -8,44 +8,34 @@ import androidx.room.Update;
 
 import edu.uph.m24si2.studypets.model.UserStats;
 
-// DAO = Data Access Object
-// Semua query untuk tabel user_stats ada di sini
 @Dao
 public interface UserStatsDao {
 
-    // INSERT OR REPLACE = kalau id sudah ada, ganti datanya
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void simpan(UserStats userStats);
 
-    // Update data yang sudah ada
     @Update
     void update(UserStats userStats);
 
-    // Ambil data user (id selalu 1)
-    @Query("SELECT * FROM user_stats WHERE id = 1 LIMIT 1")
-    UserStats getUser();
+    // Ambil data user berdasarkan username
+    @Query("SELECT * FROM user_stats WHERE username = :username LIMIT 1")
+    UserStats getUser(String username);
 
-    // Tambah XP
-    @Query("UPDATE user_stats SET xp = xp + :jumlahXp WHERE id = 1")
-    void tambahXp(int jumlahXp);
+    @Query("UPDATE user_stats SET xp = xp + :jumlahXp WHERE username = :username")
+    void tambahXp(String username, int jumlahXp);
 
-    // Tambah koin
-    @Query("UPDATE user_stats SET coins = coins + :jumlahKoin WHERE id = 1")
-    void tambahKoin(int jumlahKoin);
+    @Query("UPDATE user_stats SET coins = coins + :jumlahKoin WHERE username = :username")
+    void tambahKoin(String username, int jumlahKoin);
 
-    // Kurangi koin (tidak boleh minus)
-    @Query("UPDATE user_stats SET coins = MAX(0, coins - :jumlahKoin) WHERE id = 1")
-    void kurangiKoin(int jumlahKoin);
+    @Query("UPDATE user_stats SET coins = MAX(0, coins - :jumlahKoin) WHERE username = :username")
+    void kurangiKoin(String username, int jumlahKoin);
 
-    // Naik level
-    @Query("UPDATE user_stats SET level = level + 1, xp = xp - (level * 100) WHERE id = 1")
-    void naikLevel();
+    @Query("UPDATE user_stats SET totalQuestsCompleted = totalQuestsCompleted + 1 WHERE username = :username")
+    void tambahQuestSelesai(String username);
 
-    // Tambah jumlah quest selesai
-    @Query("UPDATE user_stats SET totalQuestsCompleted = totalQuestsCompleted + 1 WHERE id = 1")
-    void tambahQuestSelesai();
+    @Query("DELETE FROM user_stats WHERE username = :username")
+    void hapusUser(String username);
 
-    // Hapus semua data (untuk fresh start)
     @Query("DELETE FROM user_stats")
     void hapusSemua();
 }

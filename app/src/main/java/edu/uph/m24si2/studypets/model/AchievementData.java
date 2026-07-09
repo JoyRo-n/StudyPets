@@ -1,12 +1,14 @@
 package edu.uph.m24si2.studypets.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
-@Entity(tableName = "achievement_data")
+// Composite primary key: (username, id) — achievement per user
+@Entity(tableName = "achievement_data", primaryKeys = {"username", "id"})
 public class AchievementData {
 
-    @PrimaryKey
+    @NonNull
+    public String  username   = "";
     public int     id         = 0;
     public String  title      = "";
     public String  description= "";
@@ -16,8 +18,6 @@ public class AchievementData {
 
     public AchievementData() {}
 
-    public int     getId()                  { return id; }
-    public void    setId(int v)             { this.id = v; }
     public String  getTitle()               { return title; }
     public void    setTitle(String v)       { this.title = v; }
     public String  getDescription()         { return description; }

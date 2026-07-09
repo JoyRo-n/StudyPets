@@ -60,8 +60,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         holder.txvUsername.setText(u.username);
         holder.txvPassword.setText(u.password);
         holder.txvId.setText("ID: " + u.id);
-        holder.txvPetType.setText("Pet: " + u.petType);
-        holder.btnDelete.setOnClickListener(v -> listener.onDelete(u));
+        holder.txvPetType.setText(u.isAdmin ? "👑 Admin" : "Pet: " + u.petType);
+
+        // Sembunyikan tombol hapus untuk akun admin
+        if (u.isAdmin) {
+            holder.btnDelete.setVisibility(android.view.View.GONE);
+        } else {
+            holder.btnDelete.setVisibility(android.view.View.VISIBLE);
+            holder.btnDelete.setOnClickListener(v -> listener.onDelete(u));
+        }
     }
 
     @Override

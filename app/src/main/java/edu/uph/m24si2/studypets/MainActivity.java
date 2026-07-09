@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tvPetName, tvPetMoodLabel, tvQuestCount;
     Button btnAddQuest, btnFeedPet, btnShop;
     Button btnAchievements, btnStats, btnCalendar, btnLogout, btnRenamePet, btnBelajar;
+    Button btnKelolaUser; // Tombol khusus admin
     CardView cardDropMotivation;
     SwitchMaterial switchDarkMode;
 
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
             String petType  = prefs.getString("pet_type", "cat");
             db.initializeUserStats(username);
             db.initializePet(petType, petType.equals("dog") ? "Buddy" : "Mochi");
+            db.seedShopItemsForUser(username);
+            db.seedAchievementsForUser(username);
             prefs.edit().putBoolean("is_new_user", false).apply();
         }
 
@@ -118,6 +121,13 @@ public class MainActivity extends AppCompatActivity {
         btnBelajar       = findViewById(R.id.btn_belajar);
         cardDropMotivation = findViewById(R.id.card_drop_motivation);
         switchDarkMode   = findViewById(R.id.switch_dark_mode);
+
+        // Tombol & badge admin — hanya tampil jika user adalah admin
+        btnKelolaUser    = findViewById(R.id.btn_kelola_user);
+        TextView tvAdminBadge = findViewById(R.id.tv_admin_badge);
+        boolean isAdmin  = prefs.getBoolean("is_admin", false);
+        btnKelolaUser.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+        tvAdminBadge.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
 
         // Set posisi switch sesuai preferensi tersimpan
         SharedPreferences settings = getSharedPreferences("studypets_settings", MODE_PRIVATE);
@@ -228,6 +238,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, MateriActivity.class));
+            }
+        });
+
+        // Tombol kelola user — hanya untuk admin
+        btnKelolaUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, DaftarUserActivity.class));
             }
         });
 

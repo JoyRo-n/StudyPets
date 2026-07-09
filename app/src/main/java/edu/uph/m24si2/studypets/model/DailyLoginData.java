@@ -2,12 +2,13 @@ package edu.uph.m24si2.studypets.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
-@Entity(tableName = "daily_login_data")
+// Composite primary key: (username, loginDate) — streak per user
+@Entity(tableName = "daily_login_data", primaryKeys = {"username", "loginDate"})
 public class DailyLoginData {
 
-    @PrimaryKey
+    @NonNull
+    public String  username  = "";
     @NonNull
     public String  loginDate = "";
     public int     dayNumber = 1;

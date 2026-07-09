@@ -1,12 +1,15 @@
 package edu.uph.m24si2.studypets.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
-@Entity(tableName = "inventory_item")
+// Composite primary key: (username, id) — setiap user punya quantity sendiri
+// tapi berbagi katalog item yang sama
+@Entity(tableName = "inventory_item", primaryKeys = {"username", "id"})
 public class InventoryItem {
 
-    @PrimaryKey
+    @NonNull
+    public String username    = ""; // pemilik item
     public int    id          = 0;
     public String name        = "";
     public String type        = "food";
@@ -16,8 +19,6 @@ public class InventoryItem {
 
     public InventoryItem() {}
 
-    public int    getId()               { return id; }
-    public void   setId(int v)          { this.id = v; }
     public String getName()             { return name; }
     public void   setName(String v)     { this.name = v; }
     public String getType()             { return type; }

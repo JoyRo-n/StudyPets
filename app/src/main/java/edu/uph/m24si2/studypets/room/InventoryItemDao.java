@@ -12,39 +12,33 @@ import edu.uph.m24si2.studypets.model.InventoryItem;
 @Dao
 public interface InventoryItemDao {
 
-    // Simpan item baru (untuk seeding data awal shop)
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void simpan(InventoryItem item);
 
-    // Ambil SEMUA item (untuk tampilan shop — termasuk yang belum dibeli)
-    @Query("SELECT * FROM inventory_item ORDER BY type ASC")
-    List<InventoryItem> getSemuaItem();
+    // Ambil semua item milik user tertentu (untuk shop — semua item tampil)
+    @Query("SELECT * FROM inventory_item WHERE username = :username ORDER BY type ASC")
+    List<InventoryItem> getSemuaItem(String username);
 
-    // Ambil item yang sudah dibeli (quantity > 0) untuk inventory
-    @Query("SELECT * FROM inventory_item WHERE quantity > 0 ORDER BY name ASC")
-    List<InventoryItem> getInventoryUser();
+    // Ambil item yang sudah dibeli (quantity > 0) untuk inventory user
+    @Query("SELECT * FROM inventory_item WHERE username = :username AND quantity > 0 ORDER BY name ASC")
+    List<InventoryItem> getInventoryUser(String username);
 
-    // Tambah quantity setelah dibeli
-    @Query("UPDATE inventory_item SET quantity = quantity + :jumlah WHERE id = :idItem")
-    void tambahQuantity(int idItem, int jumlah);
+    @Query("UPDATE inventory_item SET quantity = quantity + :jumlah WHERE username = :username AND id = :idItem")
+    void tambahQuantity(String username, int idItem, int jumlah);
 
-    // Kurangi quantity setelah digunakan
-    @Query("UPDATE inventory_item SET quantity = quantity - 1 WHERE id = :idItem AND quantity > 0")
-    void kurangiQuantity(int idItem);
+    @Query("UPDATE inventory_item SET quantity = quantity - 1 WHERE username = :username AND id = :idItem AND quantity > 0")
+    void kurangiQuantity(String username, int idItem);
 
-    // Ambil satu item berdasarkan id
-    @Query("SELECT * FROM inventory_item WHERE id = :idItem LIMIT 1")
-    InventoryItem getItemById(int idItem);
+    @Query("SELECT * FROM inventory_item WHERE username = :username AND id = :idItem LIMIT 1")
+    InventoryItem getItemById(String username, int idItem);
 
-    // Tambah quantity berdasarkan nama item (untuk daily login reward)
-    @Query("UPDATE inventory_item SET quantity = quantity + :jumlah WHERE name = :namaItem")
-    void tambahQuantityByNama(String namaItem, int jumlah);
+    @Query("UPDATE inventory_item SET quantity = quantity + :jumlah WHERE username = :username AND name = :namaItem")
+    void tambahQuantityByNama(String username, String namaItem, int jumlah);
 
-    // Hitung total item yang sudah pernah dibeli (untuk achievement Shopper)
-    @Query("SELECT COUNT(*) FROM inventory_item WHERE quantity > 0")
-    int hitungItemDibeli();
+    @Query("SELECT COUNT(*) FROM inventory_item WHERE username = :username AND quantity > 0")
+    int hitungItemDibeli(String username);
 
-    // Cek apakah data shop sudah ada (untuk menghindari seed berulang)
-    @Query("SELECT COUNT(*) FROM inventory_item")
-    int hitungSemuaItem();
+    // Hitung total item untuk satu user (untuk cek apakah perlu seed)
+    @Query("SELECT COUNT(*) FROM inventory_item WHERE username = :username")
+    int hitungItemUser(String username);
 }
