@@ -7,17 +7,21 @@ import androidx.room.PrimaryKey;
 public class QuestData {
 
     @PrimaryKey(autoGenerate = true)
-    public int    id          = 0;
-    public String username    = ""; // pemilik quest — wajib diisi saat simpan
-    public String title       = "";
-    public String description = "";
-    public String subject     = "";
-    public String difficulty  = "Medium";
-    public int    xpReward    = 0;
-    public int    coinReward  = 0;
-    public String status      = "pending";
-    public String deadline    = "";
-    public String createdAt   = "";
+    public int    id            = 0;
+    public String username      = "";   // pemilik quest
+    public String title         = "";
+    public String description   = "";
+    public String subject       = "";
+    public String difficulty    = "Medium";
+    public int    xpReward      = 0;
+    public int    coinReward    = 0;
+    public String status        = "pending";
+    public String deadline      = "";
+    public String createdAt     = "";
+    public boolean isFromAdmin  = false; // true = dari admin, dapat reward
+                                         // false = quest pribadi, no reward
+    public String  buktiPath    = "";    // path foto bukti yang diupload user
+    public String  submittedAt  = "";    // waktu user submit bukti
 
     public QuestData() {}
 

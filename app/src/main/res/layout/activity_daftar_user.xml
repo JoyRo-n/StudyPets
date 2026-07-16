@@ -95,6 +95,31 @@
 
     </LinearLayout>
 
+    <!-- Tombol Buat Quest untuk User -->
+    <Button
+        android:id="@+id/btn_buat_quest_panel"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="📋 Buat Quest untuk User"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FF9800"
+        android:stateListAnimator="@null"/>
+
+    <!-- Tombol Review Bukti -->
+    <Button
+        android:id="@+id/btn_review_bukti"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="6dp"
+        android:text="🔍 Review Bukti Quest"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#4CAF50"
+        android:stateListAnimator="@null"/>
+
     <!-- RecyclerView daftar user -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_daftar_user"

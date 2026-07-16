@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="@color/bg_card"
+    android:layout_marginBottom="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Username + quest title -->
+        <TextView
+            android:id="@+id/tv_review_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="👤 jessen"
+            android:textSize="12sp"
+            android:textColor="#FF9800"
+            android:textStyle="bold"
+            android:background="#FFF3E0"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"/>
+
+        <TextView
+            android:id="@+id/tv_review_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kerjakan soal Matematika"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="6dp"/>
+
+        <TextView
+            android:id="@+id/tv_review_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Matematika  •  Medium  •  Deadline: 2024-12-31"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginTop="2dp"/>
+
+        <!-- Foto bukti -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📷 Foto Bukti:"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="6dp"/>
+
+        <ImageView
+            android:id="@+id/img_bukti"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:background="#F5F5F5"
+            android:contentDescription="Foto bukti quest"/>
+
+        <!-- Reward info -->
+        <TextView
+            android:id="@+id/tv_review_reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="💰 Reward jika disetujui: 30 XP + 50 🪙"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginTop="10dp"/>
+
+        <!-- Tombol Approve & Reject -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp">
+
+            <Button
+                android:id="@+id/btn_reject"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="❌ Tolak"
+                android:textSize="14sp"
+                android:textColor="#F44336"
+                android:backgroundTint="#FFEBEE"
+                android:stateListAnimator="@null"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/btn_approve"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="✅ Setujui"
+                android:textSize="14sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#4CAF50"
+                android:stateListAnimator="@null"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -46,6 +46,8 @@
         <activity android:name=".HasilQuizActivity" android:exported="false" android:screenOrientation="portrait"/>
         <activity android:name=".TambahQuestActivity" android:exported="false" android:screenOrientation="portrait"/>
         <activity android:name=".DaftarUserActivity" android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".AdminQuestActivity" android:exported="false" android:screenOrientation="portrait"/>
+        <activity android:name=".AdminReviewActivity" android:exported="false" android:screenOrientation="portrait"/>
 
         <receiver android:name=".DeadlineReceiver" android:exported="false"/>
 

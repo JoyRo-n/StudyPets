@@ -11,22 +11,22 @@ import edu.uph.m24si2.studypets.model.DailyLoginData;
 import edu.uph.m24si2.studypets.model.InventoryItem;
 import edu.uph.m24si2.studypets.model.PetData;
 import edu.uph.m24si2.studypets.model.QuestData;
+import edu.uph.m24si2.studypets.model.RiwayatBelajar;
 import edu.uph.m24si2.studypets.model.UserStats;
 import edu.uph.m24si2.studypets.room.UserEntity;
 
-// @Database mendaftarkan semua tabel (Entity) dan versi database
-// Kalau ada perubahan struktur tabel, naikkan version
 @Database(
     entities = {
-        UserEntity.class,       // tabel login/register
-        UserStats.class,        // stats user (level, xp, koin)
-        PetData.class,          // data pet
-        QuestData.class,        // daftar quest
-        InventoryItem.class,    // item shop & inventory
-        AchievementData.class,  // achievement / badge
-        DailyLoginData.class    // streak login harian
+        UserEntity.class,
+        UserStats.class,
+        PetData.class,
+        QuestData.class,
+        InventoryItem.class,
+        AchievementData.class,
+        DailyLoginData.class,
+        RiwayatBelajar.class    // tabel riwayat belajar/kuis
     },
-    version = 5, // naik karena semua tabel sekarang punya kolom username untuk isolasi per-user
+    version = 7, // naik karena tambah kolom buktiPath, submittedAt di quest_data
     exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {
@@ -39,6 +39,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract InventoryItemDao inventoryItemDao();
     public abstract AchievementDataDao achievementDataDao();
     public abstract DailyLoginDao    dailyLoginDao();
+    public abstract RiwayatBelajarDao riwayatBelajarDao();
 
     // Singleton — satu instance untuk seluruh app
     private static AppDatabase instance;

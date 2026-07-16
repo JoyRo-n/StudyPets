@@ -90,7 +90,7 @@ public class CalendarActivity extends AppCompatActivity {
         for (QuestData q : semua) {
             if (q.deadline != null && q.deadline.startsWith(tanggalDipilih)) {
                 hasil.add(new Quest(q.id, q.title, q.description, q.subject,
-                        q.difficulty, q.xpReward, q.coinReward, q.status, q.deadline));
+                        q.difficulty, q.xpReward, q.coinReward, q.status, q.deadline, q.isFromAdmin, q.buktiPath));
             }
         }
 

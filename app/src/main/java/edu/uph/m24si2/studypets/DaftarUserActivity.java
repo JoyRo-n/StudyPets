@@ -1,5 +1,6 @@
 package edu.uph.m24si2.studypets;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -60,6 +61,19 @@ public class DaftarUserActivity extends AppCompatActivity {
 
         Button btnBack = findViewById(R.id.btn_back_daftar_user);
         btnBack.setOnClickListener(v -> finish());
+
+        Button btnBuatQuest = findViewById(R.id.btn_buat_quest_panel);
+        btnBuatQuest.setOnClickListener(v ->
+                startActivity(new Intent(this, AdminQuestActivity.class)));
+
+        Button btnReview = findViewById(R.id.btn_review_bukti);
+        // Tampilkan jumlah bukti pending di tombol
+        int pending = edu.uph.m24si2.studypets.database.RoomHelper.getOrInit(this).hitungMenungguReview();
+        if (pending > 0) {
+            btnReview.setText("🔍 Review Bukti (" + pending + " pending)");
+        }
+        btnReview.setOnClickListener(v ->
+                startActivity(new Intent(this, AdminReviewActivity.class)));
     }
 
     // Tampilkan dialog konfirmasi sebelum menghapus user

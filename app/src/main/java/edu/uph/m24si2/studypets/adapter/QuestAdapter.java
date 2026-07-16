@@ -28,10 +28,15 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
         void onDelete(Quest quest);
     }
 
+    public interface OnSubmitBuktiListener {
+        void onSubmitBukti(Quest quest);
+    }
+
     private Context context;
     private List<Quest> questList;
     private OnQuestCompleteListener completeListener;
     private OnQuestDeleteListener deleteListener;
+    private OnSubmitBuktiListener submitBuktiListener;
 
     public QuestAdapter(Context context, List<Quest> questList,
                         OnQuestCompleteListener completeListener,
@@ -40,6 +45,10 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
         this.questList        = questList;
         this.completeListener = completeListener;
         this.deleteListener   = deleteListener;
+    }
+
+    public void setSubmitBuktiListener(OnSubmitBuktiListener listener) {
+        this.submitBuktiListener = listener;
     }
 
     // setData() — method untuk update data dari luar adapter
@@ -63,8 +72,16 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
         holder.tvTitle.setText(quest.getTitle());
         holder.tvSubject.setText(quest.getSubject());
         holder.tvDeadline.setText("📅 " + quest.getDeadline());
-        holder.tvReward.setText("⚡ " + quest.getXpReward() + " XP | 🪙 " + quest.getCoinReward());
         holder.tvDifficulty.setText(quest.getDifficulty());
+
+        // Label reward berbeda sesuai tipe quest
+        if (quest.isFromAdmin()) {
+            holder.tvReward.setText("👑 Admin Quest  |  ⚡ " + quest.getXpReward() + " XP  🪙 " + quest.getCoinReward());
+            holder.tvReward.setTextColor(0xFFFF9800);
+        } else {
+            holder.tvReward.setText("📝 Quest Pribadi  |  Tanpa Reward");
+            holder.tvReward.setTextColor(0xFF9E9E9E);
+        }
 
         // Warna badge kesulitan
         if (quest.getDifficulty().equalsIgnoreCase("easy")) {
@@ -75,28 +92,39 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
             holder.tvDifficulty.setBackgroundResource(R.drawable.bg_badge_medium);
         }
 
-        // Tombol Selesai — hanya tampil kalau quest masih aktif
-        if (completeListener != null && quest.getStatus().equals("pending")) {
-            holder.btnComplete.setVisibility(View.VISIBLE);
-            final Quest q = quest;
-            holder.btnComplete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { completeListener.onComplete(q); }
-            });
-        } else {
-            holder.btnComplete.setVisibility(View.GONE);
-        }
+        boolean isPending   = quest.getStatus().equals("pending");
+        boolean isSubmitted = quest.getStatus().equals("submitted");
 
-        // Tombol Hapus
-        if (deleteListener != null) {
-            holder.btnDelete.setVisibility(View.VISIBLE);
-            final Quest q = quest;
-            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) { deleteListener.onDelete(q); }
-            });
-        } else {
+        // Banner menunggu review
+        holder.tvStatusSubmitted.setVisibility(isSubmitted ? View.VISIBLE : View.GONE);
+
+        if (quest.isFromAdmin()) {
+            // Quest admin: tombol "Submit Bukti" saat pending, sembunyikan saat submitted
+            if (isPending && submitBuktiListener != null) {
+                holder.btnComplete.setVisibility(View.VISIBLE);
+                holder.btnComplete.setText("📷 Submit Bukti");
+                holder.btnComplete.setOnClickListener(v -> submitBuktiListener.onSubmitBukti(quest));
+            } else {
+                holder.btnComplete.setVisibility(View.GONE);
+            }
+            // Quest admin tidak bisa dihapus user
             holder.btnDelete.setVisibility(View.GONE);
+        } else {
+            // Quest pribadi: tombol complete biasa
+            if (isPending && completeListener != null) {
+                holder.btnComplete.setVisibility(View.VISIBLE);
+                holder.btnComplete.setText("✅ Selesai");
+                holder.btnComplete.setOnClickListener(v -> completeListener.onComplete(quest));
+            } else {
+                holder.btnComplete.setVisibility(View.GONE);
+            }
+            // Quest pribadi bisa dihapus
+            if (deleteListener != null) {
+                holder.btnDelete.setVisibility(View.VISIBLE);
+                holder.btnDelete.setOnClickListener(v -> deleteListener.onDelete(quest));
+            } else {
+                holder.btnDelete.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -107,18 +135,19 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
 
     // ViewHolder menyimpan referensi ke komponen layout satu item quest
     static class QuestViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvSubject, tvDeadline, tvReward, tvDifficulty;
+        TextView tvTitle, tvSubject, tvDeadline, tvReward, tvDifficulty, tvStatusSubmitted;
         Button btnComplete, btnDelete;
 
         QuestViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTitle      = itemView.findViewById(R.id.tv_quest_title);
-            tvSubject    = itemView.findViewById(R.id.tv_quest_subject);
-            tvDeadline   = itemView.findViewById(R.id.tv_quest_deadline);
-            tvReward     = itemView.findViewById(R.id.tv_quest_reward);
-            tvDifficulty = itemView.findViewById(R.id.tv_quest_difficulty);
-            btnComplete  = itemView.findViewById(R.id.btn_complete_quest);
-            btnDelete    = itemView.findViewById(R.id.btn_delete_quest);
+            tvTitle           = itemView.findViewById(R.id.tv_quest_title);
+            tvSubject         = itemView.findViewById(R.id.tv_quest_subject);
+            tvDeadline        = itemView.findViewById(R.id.tv_quest_deadline);
+            tvReward          = itemView.findViewById(R.id.tv_quest_reward);
+            tvDifficulty      = itemView.findViewById(R.id.tv_quest_difficulty);
+            tvStatusSubmitted = itemView.findViewById(R.id.tv_quest_status_submitted);
+            btnComplete       = itemView.findViewById(R.id.btn_complete_quest);
+            btnDelete         = itemView.findViewById(R.id.btn_delete_quest);
         }
     }
 }

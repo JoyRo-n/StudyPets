@@ -13,6 +13,7 @@ import edu.uph.m24si2.studypets.model.DailyLoginData;
 import edu.uph.m24si2.studypets.model.InventoryItem;
 import edu.uph.m24si2.studypets.model.PetData;
 import edu.uph.m24si2.studypets.model.QuestData;
+import edu.uph.m24si2.studypets.model.RiwayatBelajar;
 import edu.uph.m24si2.studypets.model.UserStats;
 import edu.uph.m24si2.studypets.room.AppDatabase;
 
@@ -62,6 +63,11 @@ public class RoomHelper {
 
     public String getCurrentUsername() {
         return currentUsername;
+    }
+
+    // Akses langsung ke AppDatabase — untuk kebutuhan admin
+    public edu.uph.m24si2.studypets.room.AppDatabase getAppDatabase() {
+        return db;
     }
 
     // =====================================================
@@ -169,9 +175,27 @@ public class RoomHelper {
     //  QUEST DATA
     // =====================================================
 
-    // Tambah quest baru — masukkan username otomatis
+    // Quest pribadi user — TIDAK dapat reward
     public long addQuest(String judul, String deskripsi, String mapel,
                          String kesulitan, String deadline) {
+        QuestData q = new QuestData();
+        q.username    = currentUsername;
+        q.title       = judul;
+        q.description = deskripsi;
+        q.subject     = mapel;
+        q.difficulty  = kesulitan;
+        q.xpReward    = 0;    // no reward untuk quest pribadi
+        q.coinReward  = 0;
+        q.status      = "pending";
+        q.deadline    = deadline;
+        q.createdAt   = getCurrentTime();
+        q.isFromAdmin = false;
+        return db.questDataDao().simpan(q);
+    }
+
+    // Quest dari admin untuk user tertentu — DAPAT reward
+    public long addQuestFromAdmin(String targetUsername, String judul, String deskripsi,
+                                   String mapel, String kesulitan, String deadline) {
         int xp, koin;
         switch (kesulitan.toLowerCase()) {
             case "easy": xp = 10;  koin = 20;  break;
@@ -180,7 +204,7 @@ public class RoomHelper {
         }
 
         QuestData q = new QuestData();
-        q.username    = currentUsername; // PENTING: isi username pemilik quest
+        q.username    = targetUsername;  // ditujukan ke user tertentu
         q.title       = judul;
         q.description = deskripsi;
         q.subject     = mapel;
@@ -190,7 +214,7 @@ public class RoomHelper {
         q.status      = "pending";
         q.deadline    = deadline;
         q.createdAt   = getCurrentTime();
-
+        q.isFromAdmin = true;
         return db.questDataDao().simpan(q);
     }
 
@@ -209,27 +233,25 @@ public class RoomHelper {
         return db.questDataDao().getSemuaQuest(currentUsername);
     }
 
-    // Selesaikan quest — update status dan beri reward
+    // Selesaikan quest — reward hanya diberikan jika quest dari admin
     public void completeQuest(int idQuest) {
-        // Ambil data quest dulu untuk ambil reward
         QuestData q = db.questDataDao().getQuestById(idQuest);
         if (q == null) return;
 
-        // Tandai selesai
         db.questDataDao().selesaikanQuest(idQuest);
 
-        // Hitung XP (setengah kalau Drop Motivation)
+        // Quest pribadi tidak dapat reward
+        if (!q.isFromAdmin) return;
+
         int xp = isPetDropMotivation() ? Math.max(1, q.xpReward / 2) : q.xpReward;
 
-        // Beri reward ke user
-        UserStats u = db.userStatsDao().getUser();
+        UserStats u = db.userStatsDao().getUser(currentUsername);
         if (u != null) {
             u.xp    = u.xp + xp;
             u.coins = u.coins + q.coinReward;
             u.totalQuestsCompleted = u.totalQuestsCompleted + 1;
             db.userStatsDao().update(u);
 
-            // Cek level up setelah xp bertambah
             int dibutuhkan = u.level * 100;
             if (u.xp >= dibutuhkan) {
                 u.level = u.level + 1;
@@ -243,6 +265,52 @@ public class RoomHelper {
     // Hapus quest
     public void deleteQuest(int idQuest) {
         db.questDataDao().hapusQuest(idQuest);
+    }
+
+    // Submit bukti foto untuk quest admin
+    public void submitBuktiBelajar(int idQuest, String fotoPath) {
+        db.questDataDao().submitBukti(idQuest, fotoPath, getCurrentTime());
+    }
+
+    // Approve bukti — beri reward ke user pemilik quest
+    public void approveBukti(int idQuest) {
+        QuestData q = db.questDataDao().getQuestById(idQuest);
+        if (q == null) return;
+
+        db.questDataDao().selesaikanQuest(idQuest);
+
+        // Beri reward ke user pemilik quest
+        String targetUsername = q.username;
+        UserStats u = db.userStatsDao().getUser(targetUsername);
+        if (u != null) {
+            int xp = q.xpReward;
+            u.xp    = u.xp + xp;
+            u.coins = u.coins + q.coinReward;
+            u.totalQuestsCompleted = u.totalQuestsCompleted + 1;
+            db.userStatsDao().update(u);
+
+            int dibutuhkan = u.level * 100;
+            if (u.xp >= dibutuhkan) {
+                u.level = u.level + 1;
+                u.xp    = u.xp - dibutuhkan;
+                db.userStatsDao().update(u);
+            }
+        }
+    }
+
+    // Reject bukti — kembalikan quest ke pending
+    public void rejectBukti(int idQuest) {
+        db.questDataDao().rejectBukti(idQuest);
+    }
+
+    // Ambil quest yang menunggu review admin
+    public List<QuestData> getQuestMenungguReview() {
+        return db.questDataDao().getQuestMenungguReview();
+    }
+
+    // Hitung quest menunggu review (untuk badge di admin panel)
+    public int hitungMenungguReview() {
+        return db.questDataDao().hitungMenungguReview();
     }
 
     // =====================================================
@@ -283,7 +351,35 @@ public class RoomHelper {
     }
 
     // =====================================================
-    //  STATS / CHART
+    //  RIWAYAT BELAJAR
+    // =====================================================
+
+    // Simpan hasil kuis ke riwayat — dipanggil dari HasilQuizActivity
+    public void simpanRiwayatBelajar(String topik, int nilai, int benar, int totalSoal) {
+        RiwayatBelajar r = new RiwayatBelajar();
+        r.username  = currentUsername;
+        r.topik     = topik;
+        r.nilai     = nilai;
+        r.benar     = benar;
+        r.totalSoal = totalSoal;
+        r.tanggal   = getCurrentTime();
+        db.riwayatBelajarDao().simpan(r);
+    }
+
+    // Ambil riwayat belajar user saat ini
+    public List<edu.uph.m24si2.studypets.model.RiwayatBelajar> getRiwayatBelajar() {
+        return db.riwayatBelajarDao().getRiwayatUser(currentUsername);
+    }
+
+    // Ambil semua riwayat semua user (untuk admin)
+    public List<edu.uph.m24si2.studypets.model.RiwayatBelajar> getSemuaRiwayatBelajar() {
+        return db.riwayatBelajarDao().getSemuaRiwayat();
+    }
+
+    // Ambil daftar username yang punya riwayat (untuk admin)
+    public List<String> getDaftarUsernameAktif() {
+        return db.riwayatBelajarDao().getDaftarUsernameAktif();
+    }
     // =====================================================
 
     // Hitung quest selesai per tingkat kesulitan
@@ -306,7 +402,7 @@ public class RoomHelper {
 
     // Hitung total XP akumulasi
     public int getCurrentTotalXP() {
-        UserStats u = db.userStatsDao().getUser();
+        UserStats u = db.userStatsDao().getUser(currentUsername);
         if (u == null) return 0;
         return (u.level - 1) * u.level / 2 * 100 + u.xp;
     }

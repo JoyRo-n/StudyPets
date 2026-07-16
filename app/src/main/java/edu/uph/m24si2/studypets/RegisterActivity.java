@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.uph.m24si2.studypets.database.RoomHelper;
 import edu.uph.m24si2.studypets.room.AppDatabase;
 import edu.uph.m24si2.studypets.room.UserEntity;
 
@@ -123,7 +124,11 @@ public class RegisterActivity extends AppCompatActivity {
             .putString("pet_type", selectedPet)
             .putBoolean("is_logged_in", true)
             .putBoolean("is_new_user", true)
+            .putBoolean("is_admin", false) // user baru tidak pernah admin
             .apply();
+
+        // Set username aktif di RoomHelper — wajib agar data tersimpan ke user yang benar
+        RoomHelper.getOrInit(this).setCurrentUsername(username);
 
         Toast.makeText(this,
             "Akun berhasil dibuat! Selamat datang " + username + "! 🎉",

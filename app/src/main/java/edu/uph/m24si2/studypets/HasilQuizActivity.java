@@ -55,6 +55,9 @@ public class HasilQuizActivity extends AppCompatActivity {
         db.addCoins(koinDidapat);
         db.checkAchievements();
 
+        // Simpan riwayat belajar untuk dilacak admin
+        db.simpanRiwayatBelajar(namaMateri, nilai, jumlahBenar, jumlahSoal);
+
         // Tombol kembali ke dashboard
         Button btnKeDashboard = findViewById(R.id.btn_ke_dashboard);
         btnKeDashboard.setOnClickListener(new View.OnClickListener() {

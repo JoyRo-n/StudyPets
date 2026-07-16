@@ -53,10 +53,13 @@ public class MainActivity extends AppCompatActivity {
         db    = RoomHelper.getOrInit(getApplicationContext());
         prefs = getSharedPreferences("studypets_user", MODE_PRIVATE);
 
+        // Set username aktif di RoomHelper — supaya semua query filter by user
+        String username = prefs.getString("username", "");
+        db.setCurrentUsername(username);
+
         // Inisialisasi data user baru saat pertama kali login
         if (prefs.getBoolean("is_new_user", false)) {
-            String username = prefs.getString("username", "Hero");
-            String petType  = prefs.getString("pet_type", "cat");
+            String petType = prefs.getString("pet_type", "cat");
             db.initializeUserStats(username);
             db.initializePet(petType, petType.equals("dog") ? "Buddy" : "Mochi");
             db.seedShopItemsForUser(username);

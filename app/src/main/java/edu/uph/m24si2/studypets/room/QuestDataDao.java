@@ -15,8 +15,8 @@ public interface QuestDataDao {
     @Insert
     long simpan(QuestData questData);
 
-    // Ambil quest aktif milik user tertentu
-    @Query("SELECT * FROM quest_data WHERE username = :username AND status = 'pending' ORDER BY deadline ASC")
+    // Ambil quest aktif milik user tertentu (pending + submitted)
+    @Query("SELECT * FROM quest_data WHERE username = :username AND status IN ('pending','submitted') ORDER BY deadline ASC")
     List<QuestData> getQuestAktif(String username);
 
     // Ambil quest selesai milik user tertentu
@@ -30,6 +30,22 @@ public interface QuestDataDao {
     // Tandai quest sebagai selesai
     @Query("UPDATE quest_data SET status = 'completed' WHERE id = :idQuest")
     void selesaikanQuest(int idQuest);
+
+    // Submit bukti — simpan path foto dan ubah status jadi submitted
+    @Query("UPDATE quest_data SET buktiPath = :path, submittedAt = :waktu, status = 'submitted' WHERE id = :idQuest")
+    void submitBukti(int idQuest, String path, String waktu);
+
+    // Reject bukti — kembalikan ke pending dan hapus bukti lama
+    @Query("UPDATE quest_data SET status = 'pending', buktiPath = '', submittedAt = '' WHERE id = :idQuest")
+    void rejectBukti(int idQuest);
+
+    // Ambil semua quest submitted dari semua user — untuk admin review
+    @Query("SELECT * FROM quest_data WHERE isFromAdmin = 1 AND status = 'submitted' ORDER BY submittedAt ASC")
+    List<QuestData> getQuestMenungguReview();
+
+    // Hitung quest yang menunggu review (untuk badge notif di admin panel)
+    @Query("SELECT COUNT(*) FROM quest_data WHERE isFromAdmin = 1 AND status = 'submitted'")
+    int hitungMenungguReview();
 
     // Ambil satu quest berdasarkan id
     @Query("SELECT * FROM quest_data WHERE id = :idQuest LIMIT 1")

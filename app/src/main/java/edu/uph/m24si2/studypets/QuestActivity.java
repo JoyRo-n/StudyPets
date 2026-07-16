@@ -1,17 +1,15 @@
 package edu.uph.m24si2.studypets;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,21 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import edu.uph.m24si2.studypets.adapter.QuestAdapter;
 import edu.uph.m24si2.studypets.database.RoomHelper;
 import edu.uph.m24si2.studypets.model.Quest;
 import edu.uph.m24si2.studypets.model.QuestData;
-// QuestActivity = halaman daftar quest
-// Pola: db.questDataDao().getQuestAktif() → adapter.setData() → RecyclerView
+
 public class QuestActivity extends AppCompatActivity {
 
-    // Database — sama seperti pola materi dosen
     RoomHelper db;
 
     RecyclerView rvQuests;
@@ -43,6 +36,25 @@ public class QuestActivity extends AppCompatActivity {
     TabLayout tabLayout;
     TextView tvKosong;
     String deadlineDipilih = "";
+
+    // Quest yang sedang menunggu upload bukti
+    Quest questPendingBukti = null;
+
+    // Launcher untuk buka galeri foto
+    private final ActivityResultLauncher<String> galleryLauncher =
+        registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+            if (uri != null && questPendingBukti != null) {
+                // Ambil persistent permission supaya bisa dibaca nanti
+                getContentResolver().takePersistableUriPermission(
+                        uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                db.submitBuktiBelajar(questPendingBukti.getId(), uri.toString());
+                Toast.makeText(this,
+                        "✅ Bukti berhasil dikirim! Menunggu persetujuan admin.",
+                        Toast.LENGTH_LONG).show();
+                questPendingBukti = null;
+                loadData();
+            }
+        });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,19 +71,14 @@ public class QuestActivity extends AppCompatActivity {
 
         rvQuests.setLayoutManager(new LinearLayoutManager(this));
         adapter = new QuestAdapter(this, daftarQuest,
-            new QuestAdapter.OnQuestCompleteListener() {
-                @Override
-                public void onComplete(Quest quest) {
-                    tampilkanDialogSelesai(quest);
-                }
-            },
-            new QuestAdapter.OnQuestDeleteListener() {
-                @Override
-                public void onDelete(Quest quest) {
-                    tampilkanDialogHapus(quest);
-                }
-            }
+            quest -> tampilkanDialogSelesai(quest),
+            quest -> tampilkanDialogHapus(quest)
         );
+        // Pasang listener submit bukti untuk quest admin
+        adapter.setSubmitBuktiListener(quest -> {
+            questPendingBukti = quest;
+            galleryLauncher.launch("image/*");
+        });
         rvQuests.setAdapter(adapter);
 
         loadData(); // pola loadData() sesuai materi dosen
@@ -141,20 +148,22 @@ public class QuestActivity extends AppCompatActivity {
     }
 
     private void tampilkanDialogSelesai(Quest quest) {
+        String pesanReward = quest.isFromAdmin()
+                ? "Hadiah:\n• " + quest.getXpReward() + " XP ⚡\n• " + quest.getCoinReward() + " Koin 🪙"
+                : "Quest pribadi tidak memberikan reward.\nQuest ini hanya sebagai pengingat belajar.";
+
+        String judulDialog = quest.isFromAdmin() ? "🎉 Selesaikan Quest Admin?" : "✅ Tandai Selesai?";
+
         new AlertDialog.Builder(this)
-            .setTitle("🎉 Selesaikan Quest?")
-            .setMessage("Quest: " + quest.getTitle() + "\n\nHadiah:\n"
-                    + "• " + quest.getXpReward() + " XP ⚡\n"
-                    + "• " + quest.getCoinReward() + " Koin 🪙")
-            .setPositiveButton("Claim!", new android.content.DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(android.content.DialogInterface dialog, int which) {
-                    db.completeQuest(quest.getId()); // panggil DAO melalui RoomHelper
-                    Toast.makeText(QuestActivity.this,
-                        "🎊 Quest Selesai! +" + quest.getXpReward() + " XP",
-                        Toast.LENGTH_SHORT).show();
-                    loadData(); // refresh list
-                }
+            .setTitle(judulDialog)
+            .setMessage("Quest: " + quest.getTitle() + "\n\n" + pesanReward)
+            .setPositiveButton("Selesai!", (dialog, which) -> {
+                db.completeQuest(quest.getId());
+                String pesan = quest.isFromAdmin()
+                        ? "🎊 Quest Selesai! +" + quest.getXpReward() + " XP"
+                        : "✅ Quest ditandai selesai!";
+                Toast.makeText(QuestActivity.this, pesan, Toast.LENGTH_SHORT).show();
+                loadData();
             })
             .setNegativeButton("Batal", null)
             .show();
@@ -182,6 +191,6 @@ public class QuestActivity extends AppCompatActivity {
     // Konversi QuestData (Room Entity) ke Quest (plain model untuk adapter)
     private Quest ubahKeModel(QuestData q) {
         return new Quest(q.id, q.title, q.description, q.subject,
-                q.difficulty, q.xpReward, q.coinReward, q.status, q.deadline);
+                q.difficulty, q.xpReward, q.coinReward, q.status, q.deadline, q.isFromAdmin, q.buktiPath);
     }
 }
